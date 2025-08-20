@@ -22,8 +22,16 @@
       const list = document.getElementById('list');
       list.innerHTML = data.map(v => `
         <div class="card">
-          <div class="card-header"><strong>${v.platform}</strong> · ${v.user}</div>
-          ${v.embed ? `<iframe src="${v.embed}" allowfullscreen></iframe>` : `<a href="${v.url}" target="_blank">${v.url}</a>`}
+          <div class="card-header"><strong>${v.platform}</strong> - ${v.user}</div>
+          ${v.embed 
+            ? `<iframe 
+                src="${v.embed}" 
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+              </iframe>`
+            : `<a href="${v.url}" target="_blank">${v.url}</a>`
+          }
         </div>
       `).join('');
     }

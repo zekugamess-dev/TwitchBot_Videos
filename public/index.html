@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lista de Videos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h2>🎬 Lista de videos enviados</h2>
+    <button onclick="load()">🔄 Actualizar</button>
+    <button onclick="clearVideos()">🗑 Limpiar</button>
+  </header>
+
+  <main class="grid" id="list"></main>
+
+  <script>
+    async function load(){
+      const res = await fetch('/api/videos');
+      const data = await res.json();
+      const list = document.getElementById('list');
+      list.innerHTML = data.map(v => `
+        <div class="card">
+          <div class="card-header"><strong>${v.platform}</strong> · ${v.user}</div>
+          ${v.embed ? `<iframe src="${v.embed}" allowfullscreen></iframe>` : `<a href="${v.url}" target="_blank">${v.url}</a>`}
+        </div>
+      `).join('');
+    }
+
+    async function clearVideos(){
+      if(confirm('¿Seguro que quieres borrar todos los videos?')){
+        await fetch('/api/clear', { method: 'POST' });
+        load();
+      }
+    }
+
+    // Carga inicial
+    load();
+  </script>
+</body>
+</html>

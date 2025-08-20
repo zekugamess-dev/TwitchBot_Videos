@@ -1,0 +1,22 @@
+{
+  "name": "twitch-video-collector",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "pack:zip": "bestzip dist/twitch-video-collector-v1.zip server.js public package.json .env.example README.md LICENSE"
+  },
+  "dependencies": {
+    "better-sqlite3": "^9.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^4.19.2",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "tmi.js": "^1.8.5"
+  },
+  "devDependencies": {
+    "bestzip": "^2.2.1"
+  }
+}

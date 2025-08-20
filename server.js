@@ -56,18 +56,38 @@ function detectPlatform(url) {
 
 function getEmbedLink(url, platform) {
   if (platform === 'youtube') {
-    const videoId = url.split('v=')[1]?.split('&')[0] || url.split('youtu.be/')[1];
-    if (videoId) return `https://www.youtube.com/embed/${videoId}`;
+    let videoId = null;
+
+    // Caso 1: links largos con watch?v=
+    if (url.includes('watch?v=')) {
+      const params = new URL(url).searchParams;
+      videoId = params.get('v');
+    }
+
+    // Caso 2: links cortos youtu.be
+    if (!videoId && url.includes('youtu.be/')) {
+      videoId = url.split('youtu.be/')[1].split('?')[0];
+    }
+
+    // Generar embed
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
   }
+
   if (platform === 'twitch') {
-    // Para clips de Twitch sería necesario usar su API o iframe con parent param
+    // Clips de Twitch requieren parent param: tu dominio o localhost
+    // Ejemplo: https://clips.twitch.tv/embed?clip=ClipID&parent=localhost
     return url;
   }
+
   if (platform === 'tiktok') {
-    return url; // TikTok embebido requiere su widget oficial
+    return url; // TikTok requiere script oficial
   }
+
   return '';
 }
+
 
 // ===== API =====
 const app = express();
